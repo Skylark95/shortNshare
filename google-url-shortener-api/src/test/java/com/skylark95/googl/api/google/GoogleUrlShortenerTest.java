@@ -1,4 +1,4 @@
-package com.skylark95.googl.api;
+package com.skylark95.googl.api.google;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
@@ -17,7 +17,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.api.services.urlshortener.Urlshortener;
 import com.google.api.services.urlshortener.Urlshortener.Url.Insert;
 import com.google.api.services.urlshortener.model.Url;
-import com.skylark95.googl.api.core.url.URLFactory;
+import com.skylark95.googl.api.UnableToShortenURLException;
+import com.skylark95.googl.api.factory.URLFactory;
+import com.skylark95.googl.api.google.GoogleUrlShortener;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GoogleUrlShortenerTest {
@@ -41,7 +43,7 @@ public class GoogleUrlShortenerTest {
         shortenedUrl = null;
         googleLongUrl = new Url().setLongUrl(URL_TO_SHORTEN);
         googleShortUrl = new Url().setId(SHORTENED_URL);
-        when(googleLongUrlFactory.createUrl(URL_TO_SHORTEN)).thenReturn(googleLongUrl);
+        when(googleLongUrlFactory.create(URL_TO_SHORTEN)).thenReturn(googleLongUrl);
         when(shortener.url()).thenReturn(shortenerUrl);
         when(shortenerUrl.insert(googleLongUrl)).thenReturn(insert);
         when(insert.execute()).thenReturn(googleShortUrl);
