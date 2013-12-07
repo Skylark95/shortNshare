@@ -19,14 +19,17 @@
 
 package com.skylark95.shortnshare.api;
 
-import java.io.IOException;
 
 public class UnableToShortenURLException extends Exception {
 
     private static final long serialVersionUID = -1156997496107755001L;
-    
-    public UnableToShortenURLException(IOException e) {
-        super(e);
+
+    public UnableToShortenURLException() {
+        super();
+    }
+
+    public UnableToShortenURLException(Throwable cause) {
+        super(cause);
     }
 
 }
