@@ -5,19 +5,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.skylark95</groupId>
-    <artifactId>google-url-shortener-parent</artifactId>
+    <artifactId>shortnshare-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>Google URL Shortener (Parent)</name>
+    <name>shortNshare (Parent)</name>
 
     <modules>
-        <module>google-url-shortener-api</module>
+        <module>shortnshare-api</module>
     </modules>
     
     <scm>
-        <url>https://github.com/Skylark95/Google-URL-Shortener</url>
-        <connection>scm:git:git://github.com/Skylark95/Google-URL-Shortener.git</connection>
-        <developerConnection>scm:git:git@github.com:Skylark95/Google-URL-Shortener.git</developerConnection>
+        <url>https://github.com/Skylark95/shortNshare</url>
+        <connection>scm:git:git://github.com/Skylark95/shortNshare.git</connection>
+        <developerConnection>scm:git:git@github.com:Skylark95/shortNshare.git</developerConnection>
     </scm>
     
     <developers>
@@ -37,7 +37,7 @@
     
     <issueManagement>
         <system>GitHub Issues</system>
-        <url>https://github.com/Skylark95/Google-URL-Shortener/issues</url>
+        <url>https://github.com/Skylark95/shortNshare/issues</url>
     </issueManagement>
     
     <properties>
