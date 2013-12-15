@@ -21,37 +21,38 @@ package com.skylark95.shortnshare.api.google;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import com.google.api.services.urlshortener.Urlshortener;
 import com.google.api.services.urlshortener.model.Url;
-import com.skylark95.shortnshare.api.URLShortener;
-import com.skylark95.shortnshare.api.UnableToShortenURLException;
+import com.skylark95.shortnshare.api.UnableToShortenUrlException;
+import com.skylark95.shortnshare.api.UrlShortener;
 
-public class GoogleUrlShortener implements URLShortener {
+public class GoogleUrlShortener implements UrlShortener {
 
-    private final Urlshortener shortener;
-    private final Url urlModel;
+    private final Urlshortener googleUrlShortenerApi;
 
-    public GoogleUrlShortener(Urlshortener shortener, Url urlModel) {
-        this.shortener = shortener;
-        this.urlModel = urlModel;
+    @Inject
+    public GoogleUrlShortener(Urlshortener googleUrlShortenerApi) {
+        this.googleUrlShortenerApi = googleUrlShortenerApi;
     }
     
     @Override
-    public String shorten(String longURL) throws UnableToShortenURLException {
+    public String shorten(String longURL) throws UnableToShortenUrlException {
         Url theShortURL = null;
         Url theLongURL = createLongURL(longURL);
         
         try {
-            theShortURL = shortener.url().insert(theLongURL).execute();
+            theShortURL = googleUrlShortenerApi.url().insert(theLongURL).execute();
         } catch (IOException e) {
-            throw new UnableToShortenURLException(e);
+            throw new UnableToShortenUrlException(e);
         }
         
         return theShortURL.getId();
     }
 
     private Url createLongURL(String longURL) {
-        return urlModel.setLongUrl(longURL);
+        return new Url().setLongUrl(longURL);
     }
 
 }

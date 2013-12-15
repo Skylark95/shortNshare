@@ -19,8 +19,19 @@
 
 package com.skylark95.shortnshare.api;
 
-public interface URLShortener {
-    
-    abstract String shorten(String url) throws UnableToShortenURLException;
+import static com.skylark95.shortnshare.api.UrlShortenerService.GOOGLE;
+import static org.fest.assertions.api.Assertions.assertThat;
+
+import org.junit.Test;
+
+import com.skylark95.shortnshare.api.google.GoogleUrlShortener;
+
+public class UrlShortenerFactoryTest {
+
+    @Test
+    public void canGetUrlShorterForGoogleService() {
+        UrlShortener urlShortener = UrlShortenerFactory.getUrlShortenerFor(GOOGLE);
+        assertThat(urlShortener).isInstanceOf(GoogleUrlShortener.class);
+    }
 
 }

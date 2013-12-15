@@ -29,68 +29,66 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.api.services.urlshortener.Urlshortener;
 import com.google.api.services.urlshortener.Urlshortener.Url.Insert;
 import com.google.api.services.urlshortener.model.Url;
-import com.skylark95.shortnshare.api.URLShortener;
-import com.skylark95.shortnshare.api.UnableToShortenURLException;
+import com.skylark95.shortnshare.api.UnableToShortenUrlException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GoogleUrlShortenerTest {
     
-    private static final String URL_TO_SHORTEN = "https://www.google.com/";
-    private static final String SHORTENED_URL = "http://goo.gl/8dLJ3B";
+    private static final String EXPECTED_LONG_URL = "https://www.google.com/";
+    private static final String EXPECTED_SHORT_URL = "http://goo.gl/8dLJ3B";
     
-    @Mock private Urlshortener shortener;
-    @Mock private Urlshortener.Url shortenerUrl;
+    @InjectMocks private GoogleUrlShortener googleUrlShortener;
+    
+    @Mock private Urlshortener googleUrlShortenerApi;
+    @Mock private Urlshortener.Url googleApiUrl;
     @Mock private Insert insert;
     
-    private Url urlModel;
-    private String shortenedUrl;
-    
-    private URLShortener googleUrlShortener;
+    private String shortUrl;
+    private Url longUrl;
     
     @Before
     public void setUp() throws IOException {
-        shortenedUrl = null;
-        urlModel = new Url();
+        shortUrl = null;
+        longUrl = new Url().setLongUrl(EXPECTED_LONG_URL);
         
-        when(shortener.url()).thenReturn(shortenerUrl);
-        when(shortenerUrl.insert(urlModel)).thenReturn(insert);
-        when(insert.execute()).thenReturn(new Url().setId(SHORTENED_URL));
-        
-        googleUrlShortener = new GoogleUrlShortener(shortener, urlModel);
+        when(googleUrlShortenerApi.url()).thenReturn(googleApiUrl);
+        when(googleApiUrl.insert(longUrl)).thenReturn(insert);
+        when(insert.execute()).thenReturn(new Url().setId(EXPECTED_SHORT_URL));
     }
 
     @Test
-    public void doesCallGoogleApiToShortenUrl() throws IOException, UnableToShortenURLException {
+    public void doesCallGoogleApiToShortenUrl() throws IOException, UnableToShortenUrlException {
         whenTheURLIsShortened();
         verify(insert).execute();
     }
     
-    @Test(expected = UnableToShortenURLException.class)
-    public void doesThrowUnableToShortenUrlExceptionIfGoogleApiThrowsIOException() throws IOException, UnableToShortenURLException {
+    @Test(expected = UnableToShortenUrlException.class)
+    public void doesThrowUnableToShortenUrlExceptionIfGoogleApiThrowsIOException() throws IOException, UnableToShortenUrlException {
         doThrow(IOException.class).when(insert).execute();
         whenTheURLIsShortened();
     }
     
     @Test
-    public void doesReturnShortenedUrl() throws UnableToShortenURLException {
+    public void doesReturnShortenedUrl() throws UnableToShortenUrlException {
         whenTheURLIsShortened();
-        assertThat(shortenedUrl).isEqualTo(SHORTENED_URL);
+        assertThat(shortUrl).isEqualTo(EXPECTED_SHORT_URL);
     }
     
     @Test
-    public void doesSetLongUrlOnUrlModel() throws UnableToShortenURLException {
+    public void doesCallInsertWithLongUrl() throws UnableToShortenUrlException, IOException {
         whenTheURLIsShortened();
-        assertThat(urlModel.getLongUrl()).isEqualTo(URL_TO_SHORTEN);
+        verify(googleApiUrl).insert(longUrl);
     }
-
-    private void whenTheURLIsShortened() throws UnableToShortenURLException {
-        shortenedUrl = googleUrlShortener.shorten(URL_TO_SHORTEN);
+    
+    private void whenTheURLIsShortened() throws UnableToShortenUrlException {
+        shortUrl = googleUrlShortener.shorten(EXPECTED_LONG_URL);
     }
 
 }

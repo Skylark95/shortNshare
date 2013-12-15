@@ -51,6 +51,17 @@
                 <artifactId>google-api-services-urlshortener</artifactId>
                 <version>v1-rev19-1.17.0-rc</version>
             </dependency>
+	    <dependency>
+		<groupId>com.google.http-client</groupId>
+		<artifactId>google-http-client-jackson2</artifactId>
+		<version>1.17.0-rc</version>
+   	    </dependency>
+	    <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>3.0</version>
+		<classifier>no_aop</classifier>
+            </dependency>
             
             <!-- Test -->
             <dependency>

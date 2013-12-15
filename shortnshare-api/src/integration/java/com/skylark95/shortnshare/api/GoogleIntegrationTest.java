@@ -19,17 +19,19 @@
 
 package com.skylark95.shortnshare.api;
 
+import static com.skylark95.shortnshare.api.UrlShortenerService.GOOGLE;
 
-public class UnableToShortenURLException extends Exception {
+import org.junit.Test;
 
-    private static final long serialVersionUID = -1156997496107755001L;
+public class GoogleIntegrationTest {
+    
+    private static final String URL_TO_SHORTEN = "https://www.google.com/";
 
-    public UnableToShortenURLException() {
-        super();
-    }
-
-    public UnableToShortenURLException(Throwable cause) {
-        super(cause);
+    @Test
+    public void test() throws UnableToShortenUrlException {
+        UrlShortener urlShortener = UrlShortenerFactory.getUrlShortenerFor(GOOGLE);
+        System.out.println("Long URL: " + URL_TO_SHORTEN);
+        System.out.println("Short URL: " + urlShortener.shorten(URL_TO_SHORTEN));
     }
 
 }
